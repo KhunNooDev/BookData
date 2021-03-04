@@ -1,26 +1,14 @@
-const MongoClient = require('mongodb').MongoClient
-const ObjectId = require('mongodb').ObjectId
-
-const dbname = 'bookdata'
-const collectionname = 'books'
-const url = 'mongodb+srv://superadmin:1234567890123@cluster0.bmxvn.mongodb.net/' + dbname + '?retryWrites=true&w=majority'
-const client = new MongoClient(url, { useNewUrlParser: true, useUnifiedTopology: true })
-
-let db, booksCollection
-
-async function connect() {
-    //Create connection to mongodb
-    await client.connect()
-    db = client.db(dbname)
-    booksCollection = db.collection(collectionname)
-}
-connect()
-
-
 const express = require('express')
 const app = express()
-
 app.use(express.json())
+let books = []
+
+app.get('/books', (req, res) => {
+    // input
+    // process
+    // output
+    res.status(200).json(books)
+})
 
 app.post('/books', async (req, res) => {
     // input
@@ -38,10 +26,10 @@ app.post('/books', async (req, res) => {
         imageUrl: newImageUrl
     }
 
-    let bookID = 0;
+    let bookID = 0
     // process
-    const result = await booksCollection.insertOne(newBook)
-    bookID = result.insertedId
+    books.push(newBook)
+    bookID = books.length - 1
     // output
     res.status(201).json(bookID)
 })
